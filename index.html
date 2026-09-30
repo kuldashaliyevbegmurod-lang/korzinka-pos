@@ -1,0 +1,1793 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#f5f6f2" />
+    <title>Korzinka | Savdo terminali</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #202620;
+        --muted: #788078;
+        --line: #e5e8e2;
+        --paper: #fff;
+        --canvas: #f5f6f2;
+        --green: #236b4a;
+        --green-soft: #e9f2eb;
+        --orange: #ee714d;
+        --shadow: 0 8px 28px #2026200c;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--canvas);
+        color: var(--ink);
+        font:
+          14px "DM Sans",
+          sans-serif;
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      button:focus-visible,
+      input:focus-visible {
+        outline: 3px solid #b3d4be;
+        outline-offset: 2px;
+      }
+      .top {
+        height: 68px;
+        background: white;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 max(20px, calc((100vw - 1450px) / 2));
+        position: sticky;
+        top: 0;
+        z-index: 3;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        font:
+          800 19px Manrope,
+          sans-serif;
+      }
+      .mark {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        color: white;
+        background: var(--green);
+        border-radius: 9px;
+      }
+      .brand small {
+        display: block;
+        color: var(--muted);
+        font: 500 11px "DM Sans";
+        margin-top: 1px;
+      }
+      .online {
+        font-size: 12px;
+        color: #536157;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #48a36c;
+        box-shadow: 0 0 0 3px #e5f3e9;
+      }
+      .user {
+        margin-left: 18px;
+        border-left: 1px solid var(--line);
+        padding-left: 18px;
+        font-weight: 600;
+        font-size: 12px;
+      }
+      .top-right {
+        display: flex;
+        align-items: center;
+      }
+      .wrap {
+        max-width: 1450px;
+        margin: auto;
+        padding: 25px 24px;
+      }
+      .head {
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+        margin-bottom: 20px;
+      }
+      .eyebrow,
+      .mono {
+        font:
+          500 10px "DM Mono",
+          monospace;
+        color: var(--muted);
+      }
+      .eyebrow {
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+      h1 {
+        font:
+          800 26px Manrope,
+          sans-serif;
+        margin: 5px 0 0;
+        letter-spacing: 0;
+      }
+      .btn {
+        height: 39px;
+        padding: 0 13px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--ink);
+        font-size: 12px;
+        font-weight: 600;
+        display: inline-flex;
+        gap: 7px;
+        align-items: center;
+        justify-content: center;
+      }
+      .btn:hover {
+        border-color: #aab9ab;
+      }
+      .btn.primary {
+        color: white;
+        background: var(--green);
+        border-color: var(--green);
+      }
+      .btn.sale {
+        color: white;
+        background: var(--orange);
+        border-color: var(--orange);
+      }
+      .tabs {
+        display: flex;
+        gap: 23px;
+        border-bottom: 1px solid var(--line);
+        margin-bottom: 19px;
+      }
+      .tab {
+        border: 0;
+        background: none;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 0 0 12px;
+        position: relative;
+      }
+      .tab.active {
+        color: var(--green);
+      }
+      .tab.active:after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--green);
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 370px;
+        gap: 18px;
+        align-items: start;
+      }
+      .panel,
+      .receipt {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+      .panel {
+        min-height: 620px;
+        overflow: hidden;
+      }
+      .scan {
+        padding: 17px 19px;
+        border-bottom: 1px solid var(--line);
+        background: linear-gradient(110deg, #fbfcfa, #f7faf5);
+      }
+      .line {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 11px;
+      }
+      .title {
+        font:
+          700 13px Manrope,
+          sans-serif;
+      }
+      .scan-row {
+        display: flex;
+        gap: 9px;
+      }
+      .scan-input {
+        height: 47px;
+        border: 1px solid #c9d4ca;
+        background: #fff;
+        border-radius: 6px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 0 13px;
+        flex: 1;
+      }
+      .scan-input:focus-within {
+        border-color: var(--green);
+        box-shadow: 0 0 0 3px var(--green-soft);
+      }
+      .scan-input span {
+        color: var(--green);
+        font-size: 18px;
+      }
+      .scan-input input {
+        border: 0;
+        outline: none;
+        width: 100%;
+        background: transparent;
+        font:
+          500 14px "DM Mono",
+          monospace;
+      }
+      .scan-input input::placeholder {
+        font: 400 12px "DM Sans";
+        color: #9ba49b;
+      }
+      .hint {
+        padding-top: 8px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+      .hint kbd {
+        font: 10px "DM Mono";
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 1px 5px;
+        background: white;
+      }
+      .catalog {
+        padding: 17px 19px;
+      }
+      .search {
+        height: 38px;
+        max-width: 400px;
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 0 11px;
+        font-size: 12px;
+        outline: none;
+      }
+      .search:focus {
+        border-color: var(--green);
+      }
+      .cats {
+        display: flex;
+        gap: 6px;
+        overflow: auto;
+        padding: 12px 0;
+        scrollbar-width: thin;
+      }
+      .cat {
+        white-space: nowrap;
+        border: 1px solid var(--line);
+        background: white;
+        border-radius: 5px;
+        color: #677067;
+        padding: 7px 10px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .cat.active {
+        background: var(--green);
+        color: #fff;
+        border-color: var(--green);
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 9px;
+      }
+      .product {
+        min-width: 0;
+        min-height: 125px;
+        text-align: left;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        background: #fff;
+        color: var(--ink);
+        transition: 0.14s;
+      }
+      .product:hover {
+        transform: translateY(-2px);
+        border-color: #9eb9a4;
+        box-shadow: 0 5px 16px #236b4a12;
+      }
+      .product:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+      .prodtop {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        height: 37px;
+      }
+      .emoji {
+        width: 32px;
+        height: 32px;
+        border-radius: 7px;
+        display: grid;
+        place-items: center;
+        background: var(--tint);
+        font-size: 19px;
+      }
+      .stock {
+        font: 10px "DM Mono";
+        color: #7c877d;
+      }
+      .stock.low {
+        color: #c25a3f;
+      }
+      .pname {
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .meta {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 3px;
+      }
+      .price {
+        font: 500 12px "DM Mono";
+        color: var(--green);
+        margin-top: 8px;
+      }
+      .empty {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 45px;
+        color: var(--muted);
+      }
+      .receipt {
+        position: sticky;
+        top: 85px;
+        overflow: hidden;
+      }
+      .rhead {
+        padding: 17px 18px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .rtitle {
+        font: 700 15px Manrope;
+      }
+      .rno {
+        font: 10px "DM Mono";
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .iconbtn {
+        width: 32px;
+        height: 32px;
+        background: transparent;
+        border: 0;
+        border-radius: 5px;
+        color: #788078;
+        font-size: 17px;
+      }
+      .iconbtn:hover {
+        background: var(--canvas);
+      }
+      .rlist {
+        max-height: 295px;
+        min-height: 140px;
+        overflow: auto;
+        padding: 4px 18px;
+      }
+      .emptycart {
+        height: 130px;
+        display: grid;
+        place-content: center;
+        text-align: center;
+        gap: 9px;
+        color: #929a92;
+        font-size: 12px;
+      }
+      .item {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
+        padding: 12px 0;
+        border-bottom: 1px solid #eef0ec;
+      }
+      .item:last-child {
+        border-bottom: 0;
+      }
+      .iname {
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .icode {
+        font: 10px "DM Mono";
+        color: var(--muted);
+        margin-top: 4px;
+      }
+      .iright {
+        text-align: right;
+        white-space: nowrap;
+      }
+      .iline {
+        font: 500 11px "DM Mono";
+      }
+      .qty {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 7px;
+        margin-top: 6px;
+      }
+      .qbtn {
+        width: 22px;
+        height: 22px;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        color: #465047;
+        font-size: 14px;
+      }
+      .qnum {
+        font: 11px "DM Mono";
+      }
+      .totals {
+        padding: 14px 18px 17px;
+        border-top: 1px dashed #d9ded7;
+      }
+      .sum {
+        display: flex;
+        justify-content: space-between;
+        color: #737d73;
+        font-size: 11px;
+        margin: 0 0 9px;
+      }
+      .sum strong {
+        font: 500 11px "DM Mono";
+        color: var(--ink);
+      }
+      .grand {
+        padding-top: 12px;
+        border-top: 1px solid var(--line);
+        margin-top: 13px;
+        color: var(--ink);
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .grand strong {
+        font: 700 19px "DM Mono";
+        color: var(--green);
+      }
+      .cashlabel {
+        display: flex;
+        justify-content: space-between;
+        margin: 12px 0 6px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .cashlabel span {
+        font-weight: 400;
+        color: var(--muted);
+      }
+      .cash {
+        height: 38px;
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 0 10px;
+        font: 500 13px "DM Mono";
+        outline: none;
+      }
+      .change {
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .change strong {
+        font: 500 11px "DM Mono";
+        color: var(--green);
+      }
+      .checkout {
+        width: 100%;
+        height: 43px;
+        margin-top: 7px;
+      }
+      .checkout:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+      .shortcuts {
+        display: flex;
+        gap: 6px;
+        margin-top: 7px;
+      }
+      .shortcuts button {
+        flex: 1;
+        height: 26px;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        background: white;
+        color: #697369;
+        font: 10px "DM Mono";
+      }
+      .note {
+        text-align: center;
+        font-size: 9px;
+        color: #929a92;
+        margin-top: 8px;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .view {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 19px;
+      }
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 15px;
+      }
+      .toolbar .search {
+        max-width: 270px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        text-align: left;
+      }
+      th {
+        padding: 10px;
+        color: var(--muted);
+        font: 10px "DM Mono";
+        border-bottom: 1px solid var(--line);
+      }
+      td {
+        padding: 12px 10px;
+        border-bottom: 1px solid #eef0ec;
+        font-size: 12px;
+      }
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+      .pill {
+        padding: 4px 7px;
+        background: var(--green-soft);
+        color: var(--green);
+        border-radius: 4px;
+        font: 10px "DM Mono";
+      }
+      .pill.low {
+        background: #fff0e9;
+        color: #b4563c;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 11px;
+        margin: 18px 0;
+      }
+      .stat {
+        border: 1px solid var(--line);
+        border-radius: 6px;
+        padding: 15px;
+      }
+      .statlabel {
+        color: var(--muted);
+        font-size: 11px;
+      }
+      .statvalue {
+        font: 700 21px Manrope;
+        margin-top: 8px;
+      }
+      .statnote {
+        color: var(--green);
+        font-size: 10px;
+        margin-top: 4px;
+      }
+      .toast {
+        position: fixed;
+        z-index: 10;
+        left: 50%;
+        bottom: 20px;
+        transform: translate(-50%, 12px);
+        opacity: 0;
+        pointer-events: none;
+        background: #24372b;
+        color: #fff;
+        padding: 11px 16px;
+        border-radius: 5px;
+        font-size: 12px;
+        transition: 0.2s;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      .backdrop {
+        position: fixed;
+        inset: 0;
+        z-index: 5;
+        background: #1d2b2380;
+        display: grid;
+        place-items: center;
+        padding: 18px;
+      }
+      .modal {
+        width: min(430px, 100%);
+        background: white;
+        border-radius: 8px;
+        padding: 21px;
+      }
+      .modal h2 {
+        font: 700 17px Manrope;
+        margin: 0 0 16px;
+      }
+      .formgrid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 11px;
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .field.wide {
+        grid-column: 1/-1;
+      }
+      .field label {
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .field input,
+      .field select {
+        height: 37px;
+        border: 1px solid var(--line);
+        border-radius: 5px;
+        padding: 0 9px;
+        font-size: 12px;
+      }
+      .modalactions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 17px;
+      }
+      .foot {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 16px;
+        color: #959d95;
+        font: 10px "DM Mono";
+      }
+      .printhead {
+        display: none;
+      }
+      @media (max-width: 1050px) {
+        .layout {
+          grid-template-columns: minmax(0, 1fr) 330px;
+        }
+        .grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .wrap {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+      }
+      @media (max-width: 740px) {
+        .top {
+          height: 59px;
+          padding: 0 14px;
+        }
+        .online {
+          display: none;
+        }
+        .user {
+          padding-left: 10px;
+          margin-left: 10px;
+        }
+        .wrap {
+          padding: 18px 11px 27px;
+        }
+        .head {
+          align-items: flex-start;
+        }
+        .head h1 {
+          font-size: 23px;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+          gap: 11px;
+        }
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .panel {
+          min-height: 0;
+        }
+        .receipt {
+          position: static;
+        }
+        .rlist {
+          max-height: 260px;
+        }
+        .tabs {
+          gap: 20px;
+        }
+        .stats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .toolbar {
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+        .foot {
+          font-size: 9px;
+        }
+      }
+      @media (max-width: 380px) {
+        .brand {
+          font-size: 17px;
+        }
+        .mark {
+          width: 31px;
+          height: 31px;
+        }
+        .formgrid,
+        .stats {
+          grid-template-columns: 1fr;
+        }
+        .field.wide {
+          grid-column: auto;
+        }
+      }
+      @media print {
+        body {
+          background: white;
+        }
+        .top,
+        .head,
+        .tabs,
+        .panel,
+        .foot,
+        .rhead .iconbtn,
+        .cashlabel,
+        .cash,
+        .change,
+        .checkout,
+        .shortcuts,
+        .note {
+          display: none !important;
+        }
+        .wrap {
+          padding: 0;
+        }
+        .layout {
+          display: block;
+        }
+        .receipt {
+          position: static;
+          border: 0;
+          box-shadow: none;
+          max-width: 390px;
+          margin: auto;
+        }
+        .printhead {
+          display: block;
+          text-align: center;
+          padding: 15px 0;
+          border-bottom: 1px dashed #aaa;
+        }
+        .printhead h2 {
+          margin: 0;
+          font: 700 19px Manrope;
+        }
+        .printhead p {
+          font: 11px "DM Mono";
+          margin: 4px 0;
+        }
+        .rhead,
+        .rlist,
+        .totals {
+          padding-left: 0;
+          padding-right: 0;
+        }
+        .rlist {
+          max-height: none;
+          overflow: visible;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <span class="mark">K</span
+        ><span>Korzinka<small>Savdo terminali</small></span>
+      </div>
+      <div class="top-right">
+        <div class="online"><span class="dot"></span>Tizim ishlayapti</div>
+        <div class="user">Kassir · Aziz</div>
+      </div>
+    </header>
+    <main class="wrap">
+      <div class="head">
+        <div>
+          <div class="eyebrow">KORZINKA · FILIAL 01</div>
+          <h1 id="pageTitle">Kassa</h1>
+        </div>
+        <button class="btn" id="newSale">＋ Yangi chek</button>
+      </div>
+      <nav class="tabs">
+        <button class="tab active" data-view="sale">Sotuv</button
+        ><button class="tab" data-view="inventory">Mahsulotlar</button
+        ><button class="tab" data-view="reports">Hisobot</button>
+      </nav>
+      <section class="layout" id="saleView">
+        <div class="panel">
+          <div class="scan">
+            <div class="line">
+              <span class="title">Shtrix-kod skaneri</span
+              ><span class="mono">TAYYOR</span>
+            </div>
+            <form class="scan-row" id="scanForm">
+              <label class="scan-input"
+                ><span>▥</span
+                ><input
+                  id="barcode"
+                  autocomplete="off"
+                  placeholder="Shtrix-kodni kiriting yoki skanerlang..."
+                  aria-label="Shtrix-kod" /></label
+              ><button class="btn primary">Qo‘shish ↵</button>
+            </form>
+            <div class="hint">
+              Skanerni ulang yoki kodni yozib <kbd>Enter</kbd> bosing. Sinash
+              uchun mahsulotni bosing.
+            </div>
+          </div>
+          <div class="catalog">
+            <div class="line">
+              <span class="title">Do‘kon mahsulotlari</span
+              ><span class="mono" id="productCount"></span>
+            </div>
+            <input
+              class="search"
+              id="search"
+              placeholder="Nomi yoki shtrix-kod bo‘yicha qidirish..."
+              aria-label="Mahsulot qidirish"
+            />
+            <div class="cats" id="categories"></div>
+            <div class="grid" id="grid"></div>
+          </div>
+        </div>
+        <aside class="receipt">
+          <div class="printhead">
+            <h2>KORZINKA</h2>
+            <p>Chakana savdo cheki</p>
+            <p id="printDate"></p>
+          </div>
+          <div class="rhead">
+            <div>
+              <div class="rtitle">Joriy chek</div>
+              <div class="rno" id="receiptNo"></div>
+            </div>
+            <div>
+              <button
+                class="iconbtn"
+                id="print"
+                title="Chekni chop etish"
+                aria-label="Chekni chop etish"
+              >
+                ▤</button
+              ><button
+                class="iconbtn"
+                id="clear"
+                title="Chekni tozalash"
+                aria-label="Chekni tozalash"
+              >
+                ×
+              </button>
+            </div>
+          </div>
+          <div class="rlist" id="cart"></div>
+          <div class="totals">
+            <div class="sum">
+              <span>Mahsulotlar</span><strong id="units">0 dona</strong>
+            </div>
+            <div class="sum">
+              <span>Oraliq jami</span><strong id="subtotal">0 so‘m</strong>
+            </div>
+            <div class="sum"><span>Chegirma</span><strong>0 so‘m</strong></div>
+            <div class="sum grand">
+              <span>JAMI</span><strong id="total">0 so‘m</strong>
+            </div>
+            <label class="cashlabel" for="paid"
+              >Naqd pul <span>To‘lov summasi</span></label
+            ><input
+              class="cash"
+              type="number"
+              min="0"
+              inputmode="numeric"
+              id="paid"
+              placeholder="0"
+            />
+            <div class="change">
+              <span>Qaytim</span><strong id="change">0 so‘m</strong>
+            </div>
+            <button class="btn sale checkout" id="checkout" disabled>
+              ✓ &nbsp; Sotuvni yakunlash
+            </button>
+            <div class="shortcuts">
+              <button data-cash="exact">Aniq summa</button
+              ><button data-cash="1000">+1 000</button
+              ><button data-cash="10000">+10 000</button>
+            </div>
+            <div class="note">
+              Sotuv yakunlanganda qoldiq va hisobot yangilanadi
+            </div>
+          </div>
+        </aside>
+      </section>
+      <section class="view hidden" id="inventoryView">
+        <div class="toolbar">
+          <div>
+            <div class="title">Mahsulotlar ombori</div>
+            <div class="mono" id="inventoryCount" style="margin-top: 5px"></div>
+          </div>
+          <div style="display: flex; gap: 8px">
+            <input
+              class="search"
+              id="inventorySearch"
+              placeholder="Mahsulot qidirish"
+            /><button class="btn primary" id="addProduct">
+              ＋ Mahsulot qo‘shish
+            </button>
+          </div>
+        </div>
+        <div style="overflow: auto">
+          <table>
+            <thead>
+              <tr>
+                <th>MAHSULOT</th>
+                <th>SHtrix-kod</th>
+                <th>KATEGORIYA</th>
+                <th>NARX</th>
+                <th>QOLDIQ</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryRows"></tbody>
+          </table>
+        </div>
+      </section>
+      <section class="view hidden" id="reportsView">
+        <div class="line">
+          <div>
+            <div class="title">Bugungi savdo</div>
+            <div class="mono" style="margin-top: 5px">
+              Yakunlangan cheklarning qisqacha hisoboti
+            </div>
+          </div>
+          <button class="btn" id="export">↓ Yuklab olish</button>
+        </div>
+        <div class="stats" id="stats"></div>
+        <div class="line">
+          <span class="title">Oxirgi cheklar</span
+          ><span class="mono" id="salesCount"></span>
+        </div>
+        <div style="overflow: auto">
+          <table>
+            <thead>
+              <tr>
+                <th>CHEK</th>
+                <th>VAQT</th>
+                <th>MAHSULOTLAR</th>
+                <th>TO‘LOV</th>
+                <th>JAMI</th>
+              </tr>
+            </thead>
+            <tbody id="salesRows"></tbody>
+          </table>
+        </div>
+      </section>
+      <div class="foot">
+        <span>KORZINKA POS · VERSIYA 1.0</span
+        ><span>LOCAL SAVDO TERMINALI</span>
+      </div>
+    </main>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="backdrop hidden" id="backdrop">
+      <form class="modal" id="productForm">
+        <h2>Yangi mahsulot</h2>
+        <div class="formgrid">
+          <div class="field wide">
+            <label for="name">Mahsulot nomi</label
+            ><input id="name" required placeholder="Masalan: Sut 1 litr" />
+          </div>
+          <div class="field">
+            <label for="code">Shtrix-kod</label
+            ><input
+              id="code"
+              required
+              inputmode="numeric"
+              placeholder="4780000000000"
+            />
+          </div>
+          <div class="field">
+            <label for="priceInput">Narxi (so‘m)</label
+            ><input id="priceInput" type="number" min="1" required />
+          </div>
+          <div class="field">
+            <label for="stockInput">Boshlang‘ich qoldiq</label
+            ><input id="stockInput" type="number" min="0" required />
+          </div>
+          <div class="field">
+            <label for="categoryInput">Kategoriya</label
+            ><select id="categoryInput">
+              <option>Oziq-ovqat</option>
+              <option>Ichimlik</option>
+              <option>Meva-sabzavot</option>
+              <option>Sut mahsulotlari</option>
+              <option>Uy-ro‘zg‘or</option>
+              <option>Boshqa</option>
+            </select>
+          </div>
+        </div>
+        <div class="modalactions">
+          <button class="btn" type="button" id="cancel">Bekor qilish</button
+          ><button class="btn primary">Saqlash</button>
+        </div>
+      </form>
+    </div>
+    <script>
+      const initial = [
+        {
+          id: "a1",
+          name: "Sut 3.2% · 1 l",
+          code: "4780012345001",
+          category: "Sut mahsulotlari",
+          price: 14000,
+          stock: 24,
+          emoji: "🥛",
+          tint: "#eef5e9",
+        },
+        {
+          id: "a2",
+          name: "Tuxum · 10 dona",
+          code: "4780012345002",
+          category: "Sut mahsulotlari",
+          price: 18000,
+          stock: 18,
+          emoji: "🥚",
+          tint: "#fbf2de",
+        },
+        {
+          id: "a3",
+          name: "Non · baton",
+          code: "4780012345003",
+          category: "Non va pishiriq",
+          price: 5000,
+          stock: 32,
+          emoji: "🥖",
+          tint: "#fff0dc",
+        },
+        {
+          id: "a4",
+          name: "Olma · 1 kg",
+          code: "4780012345004",
+          category: "Meva-sabzavot",
+          price: 12000,
+          stock: 15,
+          emoji: "🍎",
+          tint: "#fcebe5",
+        },
+        {
+          id: "a5",
+          name: "Banan · 1 kg",
+          code: "4780012345005",
+          category: "Meva-sabzavot",
+          price: 22000,
+          stock: 11,
+          emoji: "🍌",
+          tint: "#fbf5dd",
+        },
+        {
+          id: "a6",
+          name: "Guruch · 1 kg",
+          code: "4780012345006",
+          category: "Oziq-ovqat",
+          price: 16000,
+          stock: 20,
+          emoji: "🍚",
+          tint: "#f2f2ed",
+        },
+        {
+          id: "a7",
+          name: "O‘simlik yog‘i · 1 l",
+          code: "4780012345007",
+          category: "Oziq-ovqat",
+          price: 19000,
+          stock: 14,
+          emoji: "🫒",
+          tint: "#edf3e4",
+        },
+        {
+          id: "a8",
+          name: "Suv · 1.5 l",
+          code: "4780012345008",
+          category: "Ichimlik",
+          price: 4000,
+          stock: 40,
+          emoji: "💧",
+          tint: "#e8f3f5",
+        },
+        {
+          id: "a9",
+          name: "Sharbat · 1 l",
+          code: "4780012345009",
+          category: "Ichimlik",
+          price: 13000,
+          stock: 17,
+          emoji: "🧃",
+          tint: "#f9eee0",
+        },
+        {
+          id: "a10",
+          name: "Shokolad",
+          code: "4780012345010",
+          category: "Shirinlik",
+          price: 11000,
+          stock: 22,
+          emoji: "🍫",
+          tint: "#f4ebe4",
+        },
+        {
+          id: "a11",
+          name: "Makaron · 400 g",
+          code: "4780012345011",
+          category: "Oziq-ovqat",
+          price: 9000,
+          stock: 26,
+          emoji: "🍝",
+          tint: "#f7efe3",
+        },
+        {
+          id: "a12",
+          name: "Kir yuvish kukuni",
+          code: "4780012345012",
+          category: "Uy-ro‘zg‘or",
+          price: 32000,
+          stock: 8,
+          emoji: "🧺",
+          tint: "#eaf1ee",
+        },
+        {
+          id: "a13",
+          name: "Coca-Cola · 1 l",
+          code: "4780012345013",
+          category: "Ichimlik",
+          price: 12000,
+          stock: 30,
+          emoji: "🥤",
+          tint: "#f8e9e5",
+        },
+        {
+          id: "a14",
+          name: "Pepsi · 1.5 l",
+          code: "4780012345014",
+          category: "Ichimlik",
+          price: 11000,
+          stock: 28,
+          emoji: "🥤",
+          tint: "#e9eef7",
+        },
+        {
+          id: "a15",
+          name: "Fanta · 1.5 l",
+          code: "4780012345015",
+          category: "Ichimlik",
+          price: 10000,
+          stock: 24,
+          emoji: "🍊",
+          tint: "#fff0dc",
+        },
+        {
+          id: "a16",
+          name: "Fuse Tea · shaftoli · 1 l",
+          code: "4780012345016",
+          category: "Ichimlik",
+          price: 12000,
+          stock: 20,
+          emoji: "🧋",
+          tint: "#f6eedf",
+        },
+        {
+          id: "a17",
+          name: "Sprite · 1.5 l",
+          code: "4780012345017",
+          category: "Ichimlik",
+          price: 11000,
+          stock: 22,
+          emoji: "🍋",
+          tint: "#edf4e5",
+        },
+        {
+          id: "a18",
+          name: "Mineral suv · 1 l",
+          code: "4780012345018",
+          category: "Ichimlik",
+          price: 5000,
+          stock: 25,
+          emoji: "💧",
+          tint: "#e8f3f5",
+        },
+        {
+          id: "a19",
+          name: "Energetik ichimlik · 0.45 l",
+          code: "4780012345019",
+          category: "Ichimlik",
+          price: 15000,
+          stock: 16,
+          emoji: "⚡",
+          tint: "#f5f0dc",
+        },
+        {
+          id: "a20",
+          name: "Kartoshka chipsi",
+          code: "4780012345020",
+          category: "Gazaklar",
+          price: 9000,
+          stock: 18,
+          emoji: "🥔",
+          tint: "#f7efe3",
+        },
+        {
+          id: "a21",
+          name: "Shakar · 1 kg",
+          code: "4780012345021",
+          category: "Oziq-ovqat",
+          price: 15000,
+          stock: 20,
+          emoji: "🧂",
+          tint: "#f2f2ed",
+        },
+        {
+          id: "a22",
+          name: "Choy · qora · 25 dona",
+          code: "4780012345022",
+          category: "Oziq-ovqat",
+          price: 14000,
+          stock: 15,
+          emoji: "🍵",
+          tint: "#edf3e4",
+        },
+        {
+          id: "a23",
+          name: "Apelsin · 1 kg",
+          code: "4780012345023",
+          category: "Meva-sabzavot",
+          price: 18000,
+          stock: 16,
+          emoji: "🍊",
+          tint: "#fff0dc",
+        },
+        {
+          id: "a24",
+          name: "Uzum · 1 kg",
+          code: "4780012345024",
+          category: "Meva-sabzavot",
+          price: 25000,
+          stock: 12,
+          emoji: "🍇",
+          tint: "#f1eafa",
+        },
+        {
+          id: "a25",
+          name: "Nok · 1 kg",
+          code: "4780012345025",
+          category: "Meva-sabzavot",
+          price: 17000,
+          stock: 14,
+          emoji: "🍐",
+          tint: "#eef3dc",
+        },
+        {
+          id: "a26",
+          name: "Anor · 1 kg",
+          code: "4780012345026",
+          category: "Meva-sabzavot",
+          price: 22000,
+          stock: 10,
+          emoji: "🍎",
+          tint: "#fcebe5",
+        },
+        {
+          id: "a27",
+          name: "Limon · 1 kg",
+          code: "4780012345027",
+          category: "Meva-sabzavot",
+          price: 20000,
+          stock: 13,
+          emoji: "🍋",
+          tint: "#fbf5dd",
+        },
+        {
+          id: "a28",
+          name: "Shaftoli · 1 kg",
+          code: "4780012345028",
+          category: "Meva-sabzavot",
+          price: 19000,
+          stock: 11,
+          emoji: "🍑",
+          tint: "#fcebe5",
+        },
+        {
+          id: "a29",
+          name: "Vafli · kakao",
+          code: "4780012345029",
+          category: "Shirinlik",
+          price: 8000,
+          stock: 20,
+          emoji: "🧇",
+          tint: "#f7efe3",
+        },
+        {
+          id: "a30",
+          name: "Pechenye · sutli",
+          code: "4780012345030",
+          category: "Shirinlik",
+          price: 12000,
+          stock: 18,
+          emoji: "🍪",
+          tint: "#f7efe3",
+        },
+        {
+          id: "a31",
+          name: "Konfet · assorti",
+          code: "4780012345031",
+          category: "Shirinlik",
+          price: 9000,
+          stock: 25,
+          emoji: "🍬",
+          tint: "#fce8ed",
+        },
+        {
+          id: "a32",
+          name: "Oq shokolad",
+          code: "4780012345032",
+          category: "Shirinlik",
+          price: 13000,
+          stock: 14,
+          emoji: "🍫",
+          tint: "#f5eee5",
+        },
+        {
+          id: "a33",
+          name: "Biskvitli rulet",
+          code: "4780012345033",
+          category: "Shirinlik",
+          price: 18000,
+          stock: 10,
+          emoji: "🍰",
+          tint: "#fcebe5",
+        },
+        {
+          id: "a34",
+          name: "Muzqaymoq · vanilli",
+          code: "4780012345034",
+          category: "Shirinlik",
+          price: 10000,
+          stock: 16,
+          emoji: "🍦",
+          tint: "#eef3f6",
+        },
+      ];
+      const load = (key, backup) => {
+        try {
+          return JSON.parse(localStorage.getItem(key)) ?? backup;
+        } catch {
+          return backup;
+        }
+      };
+      let products = load("oqim-products", initial),
+        sales = load("oqim-sales", []),
+        cart = new Map(),
+        category = "Barchasi",
+        receipt = Number(load("oqim-next", 1001));
+      for (const product of initial) {
+        if (
+          !products.some((savedProduct) => savedProduct.code === product.code)
+        ) {
+          products.push(product);
+        }
+      }
+      const $ = (id) => document.getElementById(id),
+        money = (n) => new Intl.NumberFormat("uz-UZ").format(n) + " so‘m",
+        escape = (s) =>
+          String(s).replace(
+            /[&<>"']/g,
+            (c) =>
+              ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;",
+              })[c],
+          );
+      function save() {
+        localStorage.setItem("oqim-products", JSON.stringify(products));
+        localStorage.setItem("oqim-sales", JSON.stringify(sales));
+        localStorage.setItem("oqim-next", JSON.stringify(receipt));
+      }
+      let timer;
+      function toast(text) {
+        $("toast").textContent = text;
+        $("toast").classList.add("show");
+        clearTimeout(timer);
+        timer = setTimeout(() => $("toast").classList.remove("show"), 2200);
+      }
+      function total() {
+        return [...cart.values()].reduce(
+          (sum, x) => sum + x.product.price * x.qty,
+          0,
+        );
+      }
+      function renderCategories() {
+        const all = ["Barchasi", ...new Set(products.map((p) => p.category))];
+        if (!all.includes(category)) category = "Barchasi";
+        $("categories").innerHTML = all
+          .map(
+            (c) =>
+              `<button class="cat ${c === category ? "active" : ""}" data-cat="${escape(c)}">${escape(c)}</button>`,
+          )
+          .join("");
+      }
+      function renderProducts() {
+        const q = $("search").value.trim().toLocaleLowerCase("uz"),
+          list = products.filter(
+            (p) =>
+              (category === "Barchasi" || p.category === category) &&
+              (!q ||
+                p.name.toLocaleLowerCase("uz").includes(q) ||
+                p.code.includes(q)),
+          );
+        $("productCount").textContent = `${list.length} TA MAHSULOT`;
+        $("grid").innerHTML = list.length
+          ? list
+              .map(
+                (p) =>
+                  `<button class="product" data-product="${escape(p.id)}" ${p.stock < 1 ? "disabled" : ""}><span class="prodtop"><span class="emoji" style="--tint:${p.tint}">${p.emoji}</span><span class="stock ${p.stock <= 5 ? "low" : ""}">${p.stock} dona</span></span><div class="pname">${escape(p.name)}</div><div class="meta">${escape(p.category)}</div><div class="price">${money(p.price)}</div></button>`,
+              )
+              .join("")
+          : '<div class="empty">Mos mahsulot topilmadi.</div>';
+      }
+      function updateCash() {
+        const paid = Number($("paid").value) || 0;
+        $("change").textContent = money(Math.max(0, paid - total()));
+        $("checkout").disabled = !cart.size || paid < total();
+      }
+      function renderCart() {
+        $("receiptNo").textContent =
+          `CHEK № ${String(receipt).padStart(6, "0")}`;
+        const entries = [...cart.entries()];
+        $("cart").innerHTML = entries.length
+          ? entries
+              .map(
+                ([id, x]) =>
+                  `<div class="item"><div><div class="iname">${escape(x.product.name)}</div><div class="icode">${escape(x.product.code)} · ${money(x.product.price)}</div></div><div class="iright"><div class="iline">${money(x.product.price * x.qty)}</div><div class="qty"><button class="qbtn" data-id="${escape(id)}" data-delta="-1" aria-label="Kamaytirish">−</button><span class="qnum">${x.qty}</span><button class="qbtn" data-id="${escape(id)}" data-delta="1" aria-label="Ko‘paytirish" ${x.qty >= x.product.stock ? "disabled" : ""}>+</button></div></div></div>`,
+              )
+              .join("")
+          : '<div class="emptycart"><span>🛒</span><span>Chek bo‘sh. Mahsulotni skanerlang<br>yoki ro‘yxatdan tanlang.</span></div>';
+        const units = [...cart.values()].reduce((n, x) => n + x.qty, 0);
+        $("units").textContent = units + " dona";
+        $("subtotal").textContent = money(total());
+        $("total").textContent = money(total());
+        $("printDate").textContent = new Date().toLocaleString("uz-UZ");
+        updateCash();
+      }
+      function add(p) {
+        if (!p) {
+          toast("Bu shtrix-kod bazada topilmadi");
+          return;
+        }
+        const x = cart.get(p.id);
+        if ((x?.qty || 0) >= p.stock) {
+          toast("Ombordagi qoldiq yetarli emas");
+          return;
+        }
+        cart.set(p.id, { product: p, qty: (x?.qty || 0) + 1 });
+        renderCart();
+        toast(`${p.name} · ${money(p.price)}`);
+      }
+      function renderInventory() {
+        const q = $("inventorySearch").value.trim().toLocaleLowerCase("uz"),
+          list = products.filter(
+            (p) =>
+              p.name.toLocaleLowerCase("uz").includes(q) || p.code.includes(q),
+          );
+        $("inventoryCount").textContent =
+          `${products.length} TUR · ${products.reduce((s, p) => s + p.stock, 0)} DONA QOLDIQ`;
+        $("inventoryRows").innerHTML =
+          list
+            .map(
+              (p) =>
+                `<tr><td><strong>${p.emoji} &nbsp;${escape(p.name)}</strong></td><td class="mono">${escape(p.code)}</td><td>${escape(p.category)}</td><td class="mono">${money(p.price)}</td><td><span class="pill ${p.stock <= 5 ? "low" : ""}">${p.stock} dona</span></td></tr>`,
+            )
+            .join("") ||
+          '<tr><td colspan="5" style="text-align:center;color:#788078">Mahsulot topilmadi.</td></tr>';
+      }
+      function renderReport() {
+        const today = new Date().toDateString(),
+          list = sales.filter((s) => new Date(s.time).toDateString() === today),
+          revenue = list.reduce((n, s) => n + s.total, 0),
+          units = list.reduce(
+            (n, s) => n + s.items.reduce((m, i) => m + i.qty, 0),
+            0,
+          );
+        $("stats").innerHTML = [
+          ["Savdo tushumi", money(revenue), "Bugun"],
+          ["Cheklar soni", list.length + " ta", "Yakunlangan savdolar"],
+          ["Sotilgan mahsulot", units + " dona", "Bugungi jami"],
+        ]
+          .map(
+            ([a, b, c]) =>
+              `<div class="stat"><div class="statlabel">${a}</div><div class="statvalue">${b}</div><div class="statnote">${c}</div></div>`,
+          )
+          .join("");
+        $("salesCount").textContent = `${sales.length} TA CHEK`;
+        $("salesRows").innerHTML =
+          sales
+            .slice()
+            .reverse()
+            .slice(0, 30)
+            .map(
+              (s) =>
+                `<tr><td class="mono">№ ${s.id}</td><td class="mono">${new Date(s.time).toLocaleTimeString("uz-UZ", { hour: "2-digit", minute: "2-digit" })}</td><td>${s.items.reduce((n, i) => n + i.qty, 0)} dona</td><td>${s.method}</td><td class="mono">${money(s.total)}</td></tr>`,
+            )
+            .join("") ||
+          '<tr><td colspan="5" style="text-align:center;color:#788078;padding:25px">Hali savdo qilinmagan.</td></tr>';
+      }
+      function refresh() {
+        renderCategories();
+        renderProducts();
+        renderCart();
+        renderInventory();
+        renderReport();
+        save();
+      }
+      function view(name) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((t) =>
+            t.classList.toggle("active", t.dataset.view === name),
+          );
+        $("saleView").classList.toggle("hidden", name !== "sale");
+        $("inventoryView").classList.toggle("hidden", name !== "inventory");
+        $("reportsView").classList.toggle("hidden", name !== "reports");
+        $("pageTitle").textContent = {
+          sale: "Kassa",
+          inventory: "Mahsulotlar",
+          reports: "Hisobot",
+        }[name];
+      }
+      document.querySelector(".tabs").addEventListener("click", (e) => {
+        const t = e.target.closest("[data-view]");
+        if (t) view(t.dataset.view);
+      });
+      $("categories").addEventListener("click", (e) => {
+        const b = e.target.closest("[data-cat]");
+        if (b) {
+          category = b.dataset.cat;
+          renderCategories();
+          renderProducts();
+        }
+      });
+      $("grid").addEventListener("click", (e) => {
+        const b = e.target.closest("[data-product]");
+        if (b) add(products.find((p) => p.id === b.dataset.product));
+      });
+      $("scanForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const code = $("barcode").value.trim();
+        if (code) add(products.find((p) => p.code === code));
+        $("barcode").value = "";
+        $("barcode").focus();
+      });
+      $("search").addEventListener("input", renderProducts);
+      $("inventorySearch").addEventListener("input", renderInventory);
+      $("cart").addEventListener("click", (e) => {
+        const b = e.target.closest("[data-id]");
+        if (!b) return;
+        const x = cart.get(b.dataset.id),
+          p = products.find((i) => i.id === b.dataset.id);
+        if (!x) return;
+        const qty = x.qty + Number(b.dataset.delta);
+        if (qty < 1) cart.delete(b.dataset.id);
+        else if (qty <= p.stock) x.qty = qty;
+        renderCart();
+      });
+      $("paid").addEventListener("input", updateCash);
+      document.querySelector(".shortcuts").addEventListener("click", (e) => {
+        const b = e.target.closest("[data-cash]");
+        if (!b) return;
+        const amount = total();
+        $("paid").value =
+          b.dataset.cash === "exact"
+            ? amount
+            : Math.ceil(amount / Number(b.dataset.cash)) *
+              Number(b.dataset.cash);
+        updateCash();
+      });
+      $("clear").addEventListener("click", () => {
+        cart.clear();
+        $("paid").value = "";
+        renderCart();
+        toast("Chek tozalandi");
+      });
+      $("newSale").addEventListener("click", () => {
+        cart.clear();
+        $("paid").value = "";
+        renderCart();
+        view("sale");
+        $("barcode").focus();
+      });
+      $("print").addEventListener("click", () =>
+        cart.size ? window.print() : toast("Chek bo‘sh"),
+      );
+      $("checkout").addEventListener("click", () => {
+        const amount = total(),
+          paid = Number($("paid").value) || 0;
+        if (!amount || paid < amount) return;
+        const items = [...cart.values()].map((x) => ({
+          id: x.product.id,
+          name: x.product.name,
+          price: x.product.price,
+          qty: x.qty,
+        }));
+        items.forEach(
+          (i) => (products.find((p) => p.id === i.id).stock -= i.qty),
+        );
+        sales.push({
+          id: String(receipt).padStart(6, "0"),
+          time: new Date().toISOString(),
+          items,
+          total: amount,
+          paid,
+          method: "Naqd",
+        });
+        receipt++;
+        cart.clear();
+        $("paid").value = "";
+        refresh();
+        toast(
+          `Savdo yakunlandi · ${money(amount)} · Qaytim ${money(paid - amount)}`,
+        );
+        $("barcode").focus();
+      });
+      $("addProduct").addEventListener("click", () => {
+        $("backdrop").classList.remove("hidden");
+        $("name").focus();
+      });
+      $("cancel").addEventListener("click", () =>
+        $("backdrop").classList.add("hidden"),
+      );
+      $("backdrop").addEventListener("click", (e) => {
+        if (e.target === $("backdrop")) $("backdrop").classList.add("hidden");
+      });
+      $("productForm").addEventListener("submit", (e) => {
+        e.preventDefault();
+        const code = $("code").value.trim();
+        if (products.some((p) => p.code === code)) {
+          toast("Bu shtrix-kod avval qo‘shilgan");
+          return;
+        }
+        const cat = $("categoryInput").value,
+          emojis = {
+            Ichimlik: "🧃",
+            "Meva-sabzavot": "🍏",
+            "Sut mahsulotlari": "🥛",
+            "Uy-ro‘zg‘or": "🧺",
+            "Oziq-ovqat": "🥫",
+            Boshqa: "📦",
+          };
+        products.push({
+          id: "p" + Date.now(),
+          name: $("name").value.trim(),
+          code,
+          price: Number($("priceInput").value),
+          stock: Number($("stockInput").value),
+          category: cat,
+          emoji: emojis[cat] || "📦",
+          tint: "#edf2eb",
+        });
+        $("productForm").reset();
+        $("backdrop").classList.add("hidden");
+        refresh();
+        toast("Mahsulot saqlandi");
+      });
+      $("export").addEventListener("click", () => {
+        const rows = [
+            ["Chek", "Vaqt", "Mahsulotlar", "To‘lov", "Jami"],
+            ...sales.map((s) => [
+              s.id,
+              new Date(s.time).toLocaleString("uz-UZ"),
+              s.items.map((i) => `${i.name} x${i.qty}`).join("; "),
+              s.method,
+              s.total,
+            ]),
+          ],
+          csv =
+            "\uFEFF" +
+            rows
+              .map((r) =>
+                r
+                  .map((v) => '"' + String(v).replace(/"/g, '""') + '"')
+                  .join(";"),
+              )
+              .join("\r\n"),
+          url = URL.createObjectURL(
+            new Blob([csv], { type: "text/csv;charset=utf-8" }),
+          ),
+          a = document.createElement("a");
+        a.href = url;
+        a.download = "savdo-hisoboti.csv";
+        a.click();
+        URL.revokeObjectURL(url);
+        toast("Hisobot yuklab olindi");
+      });
+      refresh();
+      $("barcode").focus();
+    </script>
+  </body>
+</html>
